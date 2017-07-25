@@ -9,6 +9,7 @@
   // @include      *://www.clicrbs.com.br/*
   // @exclude      *://www.clicrbs.com.br/jsp*
   // @grant        none
+  // @downloadURL  https://github.com/eduardocamaratta/tampermonkeyscripts/raw/master/MasterchefBrasilSpoilerProtection.user.js
   // ==/UserScript==
 
   (function() {

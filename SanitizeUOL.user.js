@@ -7,6 +7,7 @@
 // @match        *://www.uol.com.br/*
 // @run-at       document-start
 // @grant        none
+// @downloadURL  https://github.com/eduardocamaratta/tampermonkeyscripts/raw/master/SanitizeUOL.user.js
 // ==/UserScript==
 
 /*

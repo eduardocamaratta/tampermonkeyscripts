@@ -6,6 +6,7 @@
 // @author       Eduardo Camaratta
 // @match        *://www.itaucinemas.com.br/404.html
 // @grant        none
+// @downloadURL  https://github.com/eduardocamaratta/tampermonkeyscripts/raw/master/RedirectItauCinemas.user.js
 // ==/UserScript==
 
 (function() {
