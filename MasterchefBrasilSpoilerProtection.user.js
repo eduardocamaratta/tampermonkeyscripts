@@ -1,7 +1,7 @@
   // ==UserScript==
   // @name         Masterchef Brasil Spoiler Protection
   // @namespace    gmcamaratta
-  // @version      1.0
+  // @version      1.1
   // @description  This script removes Masterchef spoilers from UOL and ClicRBS
   // @author       Eduardo Camaratta
   // @run-at       document-start
