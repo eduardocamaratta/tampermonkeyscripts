@@ -1,7 +1,7 @@
   // ==UserScript==
   // @name         Masterchef Brasil Spoiler Protection
   // @namespace    gmcamaratta
-  // @version      1.1
+  // @version      1.1.1
   // @description  This script removes Masterchef spoilers from UOL and ClicRBS
   // @author       Eduardo Camaratta
   // @run-at       document-start
@@ -25,7 +25,7 @@
         // If today is not wednesday yet, or if it's wednesday, but before 1am
         var today = new Date();
         var watchedDate = GM_getValue(msLastWatchedDateKey);
-        if(today.getDay() < 3 || today.getDay() == 3 && date.getHours() < 1) return false;
+        if(today.getDay() < 3 || today.getDay() == 3 && today.getHours() < 1) return false;
         if(!watchedDate) return true;
         var thisWeekEpisodeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() - (today.getDay() - 3), 1, 0);
         return new Date(watchedDate) < thisWeekEpisodeDate;
