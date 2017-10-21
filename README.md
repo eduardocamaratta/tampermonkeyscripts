@@ -1,6 +1,6 @@
 # Tampermonkey Scripts
 
-This repository is a collection of my personal Tampermonkey scripts [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en).
+This repository is a collection of my personal [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en) scripts.
 
 ## Author
 
@@ -8,7 +8,7 @@ This repository is a collection of my personal Tampermonkey scripts [Tampermonke
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
