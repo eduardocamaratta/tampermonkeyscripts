@@ -13,26 +13,19 @@
 // Don't execute for the root page. This is only needed because both the @match and @include tags don't support full RE syntax
 if(window.location.href.match(/^https?\:\/\/gauchazh.clicrbs.com.br\/?$/)) return;
 
+let altScriptPath = "http://eduardocamaratta.github.io/tampermonkeyscripts/js/main-c349eb19faceee19b954.js"
+
 (function() {
-  'use strict';
-
-  // Die, die
   window.stop();
-  var request = new XMLHttpRequest();
+  var htmlRequest = new XMLHttpRequest();
 
-  request.open('GET', location.href);
-  request.onload = function(event) {
-    // Freeze all scripts
-    var html = request.responseText
-      .replace(/type=\"text\/javascript\"/g, '')
-      .replace(/<script/g, '<script type="x-instrument/javascript"');
+  htmlRequest.open('GET', location.href);
+  htmlRequest.onload = function(event) {
+    var html = htmlRequest.responseText.replace(/<script\s+src=\".*main[^\.]+.js[^\"]*\">/, '<script src="' + altScriptPath + '">');
 
-     document.open();
-     document.write(html);
-     document.close();
-
-     // Cha ching
-     document.getElementsByClassName('m-paid-content')[0].style = "";
+    document.open();
+    document.write(html);
+    document.close();
   };
-  request.send(null);
+  htmlRequest.send(null);
 })();
