@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GauchaZH Paywall Killer
 // @namespace    gmcamaratta
-// @version      1.0
+// @version      1.0.1
 // @description  This script disables the paywall from GauchaZH
 // @author       Eduardo Camaratta
 // @match        http*://gauchazh.clicrbs.com.br/*
@@ -13,7 +13,7 @@
 // Don't execute for the root page. This is only needed because both the @match and @include tags don't support full RE syntax
 if(window.location.href.match(/^https?\:\/\/gauchazh.clicrbs.com.br\/?$/)) return;
 
-let altScriptPath = "http://eduardocamaratta.github.io/tampermonkeyscripts/js/main-c349eb19faceee19b954.js"
+let altScriptPath = "https://cdn.rawgit.com/eduardocamaratta/tampermonkeyscripts/35eb60ca/js/main-c349eb19faceee19b954.js";
 
 (function() {
   window.stop();
