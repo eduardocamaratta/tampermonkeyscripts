@@ -14,8 +14,8 @@
 // Don't execute for the root page. This is only needed because both the @match and @include tags don't support full RE syntax
 if(window.location.href.match(/^https?\:\/\/gauchazh.clicrbs.com.br\/?$/)) return;
 
-let altScriptPath        = "https://cdn.rawgit.com/eduardocamaratta/tampermonkeyscripts/af2fcc12/js/main.min.js";
-let altSpecialScriptPath = "https://cdn.rawgit.com/eduardocamaratta/tampermonkeyscripts/af2fcc12/js/special-paywall.min.js";
+let altScriptPath        = "https://cdn.rawgit.com/eduardocamaratta/tampermonkeyscripts/182d6556/js/main.min.js";
+let altSpecialScriptPath = "https://cdn.rawgit.com/eduardocamaratta/tampermonkeyscripts/182d6556/js/special-paywall.min.js";
 
 (function() {
   window.stop();
