@@ -1,14 +1,14 @@
 // ==UserScript==
 // @name         GZH Paywall Killer
 // @namespace    gmcamaratta
-// @version      1.0
+// @version      1.0.1
 // @description  This script disables the paywall from GZH
 // @author       Eduardo Camaratta
 // @match        http*://gauchazh.clicrbs.com.br/*
 // @match        http*://especiais.zh.clicrbs.com.br/*
 // @grant        none
 // @run-at       document-start
-// @downloadURL  https://github.com/eduardocamaratta/tampermonkeyscripts/raw/master/GauchaZHPaywallKiller.user.js
+// @downloadURL  https://github.com/eduardocamaratta/tampermonkeyscripts/raw/master/GZHPaywallKiller.user.js
 // ==/UserScript==
 
 // Don't execute for the root page. This is only needed because both the @match and @include tags don't support full RE syntax
