@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         GZH Paywall Killer
 // @namespace    gmcamaratta
-// @version      1.0.4
+// @version      1.0.5
 // @description  This script disables the paywall from GZH
 // @author       Eduardo Camaratta
 // @match        http*://gauchazh.clicrbs.com.br/*
@@ -23,7 +23,7 @@ let altSpecialScriptPath = "https://cdn.rawgit.com/eduardocamaratta/tampermonkey
 
   htmlRequest.open('GET', location.href);
   htmlRequest.onload = function(event) {
-    var html = htmlRequest.responseText.replace(/<script\s+src=\".*main.min.js[^\"]*\">/, '<script src="' + altScriptPath + '">');
+    var html = htmlRequest.responseText.replace(/<script[^m]+main[^j]+js[^\/]+\/[^\>]+\>/, '<script src="' + altScriptPath + '"></script>');
     html = html.replace(/http.*special-paywall.*\.js/, altSpecialScriptPath);
 
     document.open();
