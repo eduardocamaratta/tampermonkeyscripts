@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Reenable Gamespot Scroll
 // @namespace    gmcamaratta
-// @version      1.0
-// @description  Remove a class which disables the scroll in Gamespot pages
+// @version      1.1
+// @description  Remove classes which disables the scroll in Gamespot pages
 // @author       You
 // @include      https://www.gamespot.com/*
 // @grant        none
@@ -14,6 +14,8 @@
 
   var main = function() {
     $('.fb_digioh-lock').removeClass('fb_digioh-lock');
+    $('.fb_lightbox-margin').removeClass('fb_lightbox-margin');
+    $('.fb_lightbox-lock').removeClass('fb_lightbox-lock');
   };
 
   /* Load */
