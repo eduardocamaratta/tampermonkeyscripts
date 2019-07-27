@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reenable Gamespot Scroll
 // @namespace    gmcamaratta
-// @version      2.0
+// @version      2.1
 // @description  Remove classes which disables the scroll in Gamespot pages
 // @author       You
 // @include      https://www.gamespot.com/*
@@ -13,7 +13,7 @@
   'use strict';
 
   const removeOverlays = function() {
-    setTimeout(function() {
+    setInterval(function() {
       ['fb_digioh-lock', 'fb_lightbox-margin', 'fb_lightbox-lock'].map(className => {
         document.querySelectorAll(`.${className}`).forEach(el => el.classList.remove(className));
       });
