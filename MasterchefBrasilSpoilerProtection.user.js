@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Masterchef Brasil Spoiler Protection
 // @namespace    gmcamaratta
-// @version      2.1
+// @version      2.2
 // @description  This script removes Masterchef spoilers from UOL and ClicRBS
 // @author       Eduardo Camaratta
 // @run-at       document-start
@@ -17,39 +17,43 @@
     'use strict';
 
     /* Masterchef Spoiler Removal */
-    var msOverlayClass = "overlay";
-    var msOverlayModalClass = "overlay-modal";
-    var msLastWatchedDateKey = "mslastwatcheddatekey";
+    var msOverlayClass       = "overlay"
+    var msOverlayModalClass  = "overlay-modal"
+    var msLastWatchedDateKey = "mslastwatcheddatekey"
 
-    var shouldExecuteMasterchefSpoilerRemoval = function() {
-      var today = new Date();
-      var watchedDate = GM_getValue(msLastWatchedDateKey);
-      if(!watchedDate) return true;
+    var getLastEpisodeDate = function() {
+      // If day of the week, time or duration changes, this is the place where they must be updated
+      const msbrDay      = 2
+      const msbrTime     = 'T22:45:00-0300'
+      const msbrDuration = 2
 
-      // If today is not Monday, or if it's Monday after 5am.
-      // This script is tailored to GMT +2, and it will work while the Masterchef BR air date is Sunday at 22h (GMT +3)
-      var offset;
-      if(today.getDay() > 1 || (today.getDay() == 1 && today.getHours() >= 5)) {
-          offset = (today.getDay() - 1) * 24 * 3600000;
-      } else {
-          offset = (6 + today.getDay()) * 24 * 3600000;
-      }
-      var lastEpisodeDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 5);
-      lastEpisodeDate -= offset;
-      return new Date(watchedDate) < new Date(lastEpisodeDate)
-    };
+      let today = new Date()
+      const weekDay = today.getDay()
+      const diffInDays = msbrDay - weekDay
+      const deltaDays = weekDay - msbrDay >= 0 ? (diffInDays) : (-7 + diffInDays)
+      today.setDate(today.getDate() + deltaDays)
+      let msbrAirtime = new Date(`${today.getFullYear()}-${('0' + (today.getMonth() + 1)).slice(-2)}-${today.getDate()}${msbrTime}`)
+      msbrAirtime.setHours(msbrAirtime.getHours() + msbrDuration)
+      return msbrAirtime
+    }
+
+    var shouldExecuteMSBRSpoilerRemoval = function() {
+      var watchedDate = GM_getValue(msLastWatchedDateKey)
+      if(!watchedDate) return true
+      return new Date(watchedDate) < getLastEpisodeDate()
+    }
 
     var removeElement = function(e) {
-      if(!e) return;
-      e.parentNode.removeChild(e);
-    };
+      if(!e) return
+      e.parentNode.removeChild(e)
+    }
 
     var insertMasterchefSpoilerProtection = function() {
-      if(!shouldExecuteMasterchefSpoilerRemoval()) return;
+      if(!shouldExecuteMSBRSpoilerRemoval()) return
 
       // This executes before load, so jquery is not available yet
       var after = function() {
-        var body = document.getElementsByTagName('body')[0];
+        var body = document.getElementsByTagName('body')[0]
         var overlayCss = `
 .overlay {
   z-index: 10000000;
@@ -159,9 +163,9 @@
   0% {opacity: 0;}
   5% {opacity: 1;}
   100% {opacity: 0;}
-}`;
-        var overlayStyle = document.createElement('style');
-        overlayStyle.innerHTML = overlayCss;
+}`
+        var overlayStyle = document.createElement('style')
+        overlayStyle.innerHTML = overlayCss
 
         var overlayModalHtml = `
 <div class="overlay-loading">
@@ -180,89 +184,67 @@
   <span class="overlay-button-label" style="color: white !important">Watched</span>
 </div>
 <div class="overlay-modal-flash"></div>
-`;
+`
 
-        var overlayModalDiv = document.createElement('div');
-        overlayModalDiv.innerHTML = overlayModalHtml;
-        overlayModalDiv.classList = msOverlayModalClass + ' overlay-center';
+        var overlayModalDiv = document.createElement('div')
+        overlayModalDiv.innerHTML = overlayModalHtml
+        overlayModalDiv.classList = msOverlayModalClass + ' overlay-center'
 
-        var overlayDiv = document.createElement('div');
-        overlayDiv.classList = msOverlayClass;
+        var overlayDiv = document.createElement('div')
+        overlayDiv.classList = msOverlayClass
 
-        body.insertBefore(overlayModalDiv, body.children[0]);
-        body.insertBefore(overlayDiv, body.children[0]);
-        body.insertBefore(overlayStyle, body.children[0]);
+        body.insertBefore(overlayModalDiv, body.children[0])
+        body.insertBefore(overlayDiv, body.children[0])
+        body.insertBefore(overlayStyle, body.children[0])
 
         document.querySelector(`.${msOverlayModalClass}`).onclick = function(event) {
-          event.stopPropagation();
-          document.querySelector('.overlay-modal-flash').classList += " overlay-modal-flash-animation";
+          event.stopPropagation()
+          document.querySelector('.overlay-modal-flash').classList += " overlay-modal-flash-animation"
           setTimeout(_ => {
-            GM_setValue(msLastWatchedDateKey, new Date() + "");
+            GM_setValue(msLastWatchedDateKey, new Date() + "")
             window.location.reload()
-          }, 750);
-        };
-      };
+          }, 750)
+        }
+      }
 
       // This is executed in an interval to prevent the browser from crashing for excessive cpu usage
       var timer = setInterval(function() {
         if(document.getElementsByTagName('body').length > 0) {
-          clearInterval(timer);
-          after();
+          clearInterval(timer)
+          after()
         }
-      }, 5);
-    };
+      }, 5)
+    }
 
     var animateOverlay = function() {
-      var overlay = document.querySelector(`.${msOverlayClass}`);
-      var overlayModal = document.querySelector(`.${msOverlayModalClass}`);
+      var overlay = document.querySelector(`.${msOverlayClass}`)
+      var overlayModal = document.querySelector(`.${msOverlayModalClass}`)
 
       overlay.addEventListener('transitionend', _ => {
-        overlay.remove();
-        overlayModal.addEventListener('transitionend', _ => overlayModal.classList += " overlay-modal-repos");
-        overlayModal.classList += " overlay-modal-resize";
-      });
-      overlay.classList += " overlay-loaded";
-      overlayModal.classList += " overlay-modal-loaded";
+        overlay.remove()
+        overlayModal.addEventListener('transitionend', _ => overlayModal.classList += " overlay-modal-repos")
+        overlayModal.classList += " overlay-modal-resize"
+      })
+      overlay.classList += " overlay-loaded"
+      overlayModal.classList += " overlay-modal-loaded"
     }
 
     var removeMasterchefSpoilers = function() {
-      if(!shouldExecuteMasterchefSpoilerRemoval()) {
-        return;
+      if(!shouldExecuteMSBRSpoilerRemoval()) {
+        return
       }
-      var templinks = [].slice.call(document.getElementsByTagName('a'));
-      [].slice.call(document.getElementsByTagName('a')).filter((a) => {return a.href.match(/masterchef/) || a.href.match(/tvefamosos/);}).forEach((e) => removeElement(e));
+      var templinks = [].slice.call(document.getElementsByTagName('a'))
+      [].slice.call(document.getElementsByTagName('a')).filter(a => {return a.href.match(/masterchef/) || a.href.match(/tvefamosos/)}).forEach(e => removeElement(e))
 
-      animateOverlay();
-    };
-
-    /* Abort if running in an iframe */
-    if (window.self != window.top) {
-      return;
+      animateOverlay()
     }
 
-    /* Load */
-    var addLoadEvent = function(newLoadEvent) {
-      var oldOnLoad = window.onload;
-      if(typeof window.onload != 'function') {
-        window.onload = newLoadEvent;
-      } else {
-        window.onload = function() {
-          if (oldOnLoad) {
-            oldOnLoad();
-          }
-          newLoadEvent();
-        };
-      }
-    };
+    /* Abort if running in an iframe */
+    if (window.self != window.top) return
 
-    // Multiple scripts can be adding callbacks to onload, add this callback in a safe manner
-    addLoadEvent(function() {
-      setTimeout(function() {
-        removeMasterchefSpoilers();
-      }, 0);
-    });
+    window.addEventListener('load', removeMasterchefSpoilers)
 
     /* Start */
     // We execute this before load, for obvious reasons
-    insertMasterchefSpoilerProtection();
-})();
+    insertMasterchefSpoilerProtection()
+})()
