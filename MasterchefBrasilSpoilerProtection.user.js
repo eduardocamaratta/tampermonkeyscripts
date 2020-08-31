@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Masterchef Brasil Spoiler Protection
 // @namespace    gmcamaratta
-// @version      2.3
+// @version      2.4
 // @description  This script removes Masterchef spoilers from UOL and ClicRBS
 // @author       Eduardo Camaratta
 // @run-at       document-start
@@ -21,7 +21,11 @@
   var msOverlayModalClass  = "overlay-modal"
   var msLastWatchedDateKey = "mslastwatcheddatekey"
 
-  var getLastEpisodeDate = function() {
+  const formatW2Chars = function(value) {
+    return ('0' + value).slice(-2)
+  }
+
+  const getLastEpisodeDate = function() {
     // If day of the week, time or duration changes, this is the place where they must be updated
     const msbrDay      = 2
     const msbrTime     = 'T22:45:00-0300'
@@ -32,23 +36,27 @@
     const diffInDays = msbrDay - weekDay
     const deltaDays = weekDay - msbrDay >= 0 ? (diffInDays) : (-7 + diffInDays)
     today.setDate(today.getDate() + deltaDays)
-    let msbrAirtime = new Date(`${today.getFullYear()}-${('0' + (today.getMonth() + 1)).slice(-2)}-${today.getDate()}${msbrTime}`)
+    let msbrAirtime = new Date(`${today.getFullYear()}-${formatW2Chars(today.getMonth() + 1)}-${formatW2Chars(today.getDate())}${msbrTime}`)
     msbrAirtime.setHours(msbrAirtime.getHours() + msbrDuration)
+    // This adjustment is needed because of timezone differences
+    if(msbrAirtime > today) {
+      msbrAirtime -= 1000 * 3600 * 24 * 7
+    }
     return msbrAirtime
   }
 
-  var shouldExecuteMSBRSpoilerRemoval = function() {
+  const shouldExecuteMSBRSpoilerRemoval = function() {
     var watchedDate = GM_getValue(msLastWatchedDateKey)
     if(!watchedDate) return true
     return new Date(watchedDate) < getLastEpisodeDate()
   }
 
-  var removeElement = function(e) {
+  const removeElement = function(e) {
     if(!e) return
     e.parentNode.removeChild(e)
   }
 
-  var insertMasterchefSpoilerProtection = function() {
+  const insertMasterchefSpoilerProtection = function() {
     if(!shouldExecuteMSBRSpoilerRemoval()) return
 
     // This executes before load, so jquery is not available yet
@@ -216,7 +224,7 @@
     }, 5)
   }
 
-  var animateOverlay = function() {
+  const animateOverlay = function() {
     var overlay = document.querySelector(`.${msOverlayClass}`)
     var overlayModal = document.querySelector(`.${msOverlayModalClass}`)
 
@@ -229,7 +237,7 @@
     overlayModal.classList += " overlay-modal-loaded"
   }
 
-  var removeMasterchefSpoilers = function() {
+  const removeMasterchefSpoilers = function() {
     if(!shouldExecuteMSBRSpoilerRemoval()) {
       return
     }
