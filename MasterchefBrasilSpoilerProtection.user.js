@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Masterchef Brasil Spoiler Protection
 // @namespace    gmcamaratta
-// @version      2.4
+// @version      2.5
 // @description  This script removes Masterchef spoilers from UOL and ClicRBS
 // @author       Eduardo Camaratta
 // @run-at       document-start
@@ -17,8 +17,8 @@
   'use strict';
 
   /* Masterchef Spoiler Removal */
-  var msOverlayClass       = "overlay"
-  var msOverlayModalClass  = "overlay-modal"
+  var msOverlayClass = "overlay"
+  var msOverlayModalClass = "overlay-modal"
   var msLastWatchedDateKey = "mslastwatcheddatekey"
 
   const formatW2Chars = function(value) {
@@ -27,8 +27,8 @@
 
   const getLastEpisodeDate = function() {
     // If day of the week, time or duration changes, this is the place where they must be updated
-    const msbrDay      = 2
-    const msbrTime     = 'T22:45:00-0300'
+    const msbrDay = 2
+    const msbrTime = 'T22:45:00-0300'
     const msbrDuration = 2
 
     let today = new Date()
@@ -39,7 +39,7 @@
     let msbrAirtime = new Date(`${today.getFullYear()}-${formatW2Chars(today.getMonth() + 1)}-${formatW2Chars(today.getDate())}${msbrTime}`)
     msbrAirtime.setHours(msbrAirtime.getHours() + msbrDuration)
     // This adjustment is needed because of timezone differences
-    if(msbrAirtime > today) {
+    if(msbrAirtime > new Date()) {
       msbrAirtime -= 1000 * 3600 * 24 * 7
     }
     return msbrAirtime
@@ -230,7 +230,7 @@
 
     overlay.addEventListener('transitionend', _ => {
       overlay.remove()
-      overlayModal.addEventListener('transitionend', _ => overlayModal.classList += " overlay-modal-repos")
+      overlayModal.addEventListener('transitionend', _ => (overlayModal.classList += " overlay-modal-repos"))
       overlayModal.classList += " overlay-modal-resize"
     })
     overlay.classList += " overlay-loaded"
