@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Masterchef Brasil Spoiler Protection
 // @namespace    gmcamaratta
-// @version      2.5
+// @version      2.6
 // @description  This script removes Masterchef spoilers from UOL and ClicRBS
 // @author       Eduardo Camaratta
 // @run-at       document-start
@@ -28,7 +28,7 @@
   const getLastEpisodeDate = function() {
     // If day of the week, time or duration changes, this is the place where they must be updated
     const msbrDay = 2
-    const msbrTime = 'T22:45:00-0300'
+    const msbrTime = 'T22:30:00-0300'
     const msbrDuration = 2
 
     let today = new Date()
